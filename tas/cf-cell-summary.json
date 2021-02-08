@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1523191973985,
+  "iteration": 1612806214112,
   "links": [
     {
       "asDropdown": true,
@@ -51,6 +51,12 @@
       ],
       "datasource": "",
       "description": "Status of this Diego cell",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -102,7 +108,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "max(GardenHealthCheckFailed)",
+          "expr": "max(GardenHealthCheckFailed{ip=~\"$ip\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -145,6 +151,12 @@
       ],
       "datasource": "",
       "description": "Number of remaining containers in this Diego cell",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -196,7 +208,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(CapacityRemainingContainers) by(job, ip))",
+          "expr": "sum(avg(CapacityRemainingContainers{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -230,6 +242,12 @@
       "datasource": "",
       "decimals": 2,
       "description": "Remaining memory in this Diego cell",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "mbytes",
       "gauge": {
         "maxValue": 100,
@@ -281,7 +299,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(CapacityRemainingMemory) by(job, ip))",
+          "expr": "sum(avg(CapacityRemainingMemory{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -315,6 +333,12 @@
       "datasource": "",
       "decimals": 2,
       "description": "Remaining disk in this Diego cell",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "format": "mbytes",
       "gauge": {
         "maxValue": 100,
@@ -366,7 +390,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(avg(CapacityRemainingDisk) by(job, ip))",
+          "expr": "sum(avg(CapacityRemainingDisk{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -395,13 +419,21 @@
       "dashes": false,
       "datasource": "",
       "description": "Cumulative used and available number of containers.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 12,
         "x": 0,
         "y": 5
       },
+      "hiddenSeries": false,
       "id": 9,
       "legend": {
         "alignAsTable": true,
@@ -428,7 +460,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(CapacityTotalContainers) by(job, ip)) - sum(avg(CapacityRemainingContainers) by(job, ip))",
+          "expr": "sum(avg(CapacityTotalContainers{ip=~\"$ip\"}) by(job, ip)) - sum(avg(CapacityRemainingContainers{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Used",
@@ -436,7 +468,7 @@
           "step": 4
         },
         {
-          "expr": "sum(avg(CapacityRemainingContainers))",
+          "expr": "sum(avg(CapacityRemainingContainers{ip=~\"$ip\"}))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Available",
@@ -446,6 +478,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Containers",
       "tooltip": {
@@ -479,12 +512,22 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "columns": [],
       "datasource": "",
       "description": "Application instances running in this Diego cell",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 7,
@@ -504,6 +547,7 @@
       "styles": [
         {
           "alias": "Organization / Space / Application #Index",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -517,9 +561,9 @@
           "unit": "short"
         }
       ],
-      "targets": [     
+      "targets": [
         {
-          "expr": "avg(cpu) by(app_id, instance_id, app_name, instance_id, organization_name, space_name)",
+          "expr": "avg(cpu{ip=~\"$ip\"}) by(app_id, instance_id, app_name, instance_id, organization_name, space_name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ app_name }} #{{ instance_id }}",
@@ -541,7 +585,14 @@
       "description": "Cumulative allocated and available MiB of memory to allocate to containers.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -549,6 +600,7 @@
         "x": 0,
         "y": 12
       },
+      "hiddenSeries": false,
       "id": 3,
       "legend": {
         "alignAsTable": true,
@@ -575,7 +627,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(CapacityTotalMemory) by(job, ip)) - sum(avg(CapacityRemainingMemory) by(job, ip))",
+          "expr": "sum(avg(CapacityTotalMemory{ip=~\"$ip\"}) by(job, ip)) - sum(avg(CapacityRemainingMemory{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -584,7 +636,7 @@
           "step": 4
         },
         {
-          "expr": "sum(avg(CapacityRemainingMemory) by(job, ip))",
+          "expr": "sum(avg(CapacityRemainingMemory{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Available",
@@ -594,6 +646,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Cell Memory",
       "tooltip": {
@@ -628,7 +681,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "columns": [
@@ -639,6 +696,12 @@
       ],
       "datasource": "",
       "description": "Current memory usage per application instance running in this Diego cell.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 7,
@@ -658,6 +721,7 @@
       "styles": [
         {
           "alias": "Memory Usage",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -673,6 +737,7 @@
         },
         {
           "alias": "Organization / Space / Application #Index",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -688,7 +753,7 @@
       ],
       "targets": [
         {
-          "expr": "min(memory) by(app_name, instance_id, organization_name, space_name)",
+          "expr": "min(memory{ip=~\"$ip\"}) by(app_name, instance_id, organization_name, space_name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ app_name }} #{{ instance_id }}",
@@ -710,7 +775,14 @@
       "description": "Cumulative allocated and available MiB of disk to allocate to containers.",
       "editable": true,
       "error": false,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
+      "fillGradient": 0,
       "grid": {},
       "gridPos": {
         "h": 7,
@@ -718,6 +790,7 @@
         "x": 0,
         "y": 19
       },
+      "hiddenSeries": false,
       "id": 4,
       "legend": {
         "alignAsTable": true,
@@ -744,7 +817,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(avg(CapacityTotalDisk) by(job, ip)) - sum(avg(CapacityRemainingDisk) by(job, ip))",
+          "expr": "sum(avg(CapacityTotalDisk{ip=~\"$ip\"}) by(job, ip)) - sum(avg(CapacityRemainingDisk{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Allocated",
@@ -752,7 +825,7 @@
           "step": 4
         },
         {
-          "expr": "sum(avg(CapacityRemainingDisk) by(job, ip))",
+          "expr": "sum(avg(CapacityRemainingDisk{ip=~\"$ip\"}) by(job, ip))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Available",
@@ -762,6 +835,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "Total Cell Disk",
       "tooltip": {
@@ -796,7 +870,11 @@
           "min": null,
           "show": false
         }
-      ]
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "columns": [
@@ -807,6 +885,12 @@
       ],
       "datasource": "",
       "description": "Current disk usage per application instance running in this Diego cell.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fontSize": "100%",
       "gridPos": {
         "h": 7,
@@ -826,6 +910,7 @@
       "styles": [
         {
           "alias": "Disk Usage",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -841,6 +926,7 @@
         },
         {
           "alias": "Organization / Space / Application #Index",
+          "align": "auto",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -857,7 +943,7 @@
       ],
       "targets": [
         {
-          "expr": "min(disk) by(app_name, instance_id, organization_name, space_name)",
+          "expr": "min(disk{ip=~\"$ip\"}) by(app_name, instance_id, organization_name, space_name)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ organization_name }} / {{ space_name }} / {{ app_name }} #{{ instance_id }}",
@@ -872,12 +958,42 @@
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 16,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [
     "cf",
     "diego"
   ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "192.168.4.24",
+          "value": "192.168.4.24"
+        },
+        "datasource": "",
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "IP",
+        "multi": false,
+        "name": "ip",
+        "options": [],
+        "query": "label_values(CapacityTotalContainers, ip)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
   "time": {
     "from": "now-1h",
     "to": "now"
