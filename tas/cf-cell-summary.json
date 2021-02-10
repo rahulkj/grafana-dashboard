@@ -968,13 +968,8 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "192.168.4.24",
-          "value": "192.168.4.24"
-        },
+        "current": {},
         "datasource": "",
-        "definition": "",
         "hide": 0,
         "includeAll": false,
         "label": "IP",
@@ -984,7 +979,6 @@
         "query": "label_values(CapacityTotalContainers, ip)",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
         "tags": [],
